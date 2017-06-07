@@ -108,18 +108,13 @@ join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Group'
 
+-- TESTING:
 
-select * from SiteCoreData where objectid = 276894		-- parent is 100782
-select * from SiteCoreData where path = '/3550/pdf/'	-- /pdf = 100782  parent is 3550
-select * from SiteCoreData where path = '/3550/'		-- /3550 = 3550  parent is blank
+--select * from SiteCoreData where objectid = 276894		-- parent is 100782
+--select * from SiteCoreData where path = '/3550/pdf/'	-- /pdf = 100782  parent is 3550
+--select * from SiteCoreData where path = '/3550/'		-- /3550 = 3550  parent is blank
 
-select * from SiteCoreData where objectid <> t_objectid
-
-select * 
-from (
-select sdata as d, row_number() over (partition by sdata order by id desc) as rownum
-from @temp) sd
-where rownum = 2
+drop table dbo.aTemp
 
 
 
