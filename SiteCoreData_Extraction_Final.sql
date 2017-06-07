@@ -1,6 +1,6 @@
---truncate table dbo.SiteCorpData
+--truncate table dbo.SiteCoreData
 
-insert sitecorpdata
+insert SiteCoreData
 select o.ObjectID, o.ObjectTypeID, ot.name [ObjectType_Description], o.t_ObjectID, o.t_ObjectTypeID, ot2.name [t_ObjectType_Description], 
 NULL [ParentObjectID], NULL [t_ParentObjectID], o.name [Name], o.SimpleName, 
 o.path [Path], o.UpdateDate, m.BlobSize, m.BlobData, m.Extension,
@@ -19,10 +19,10 @@ o.authorid, u.name
 -- How to get Title, Short Description, Body Text, Date, Searchable, Show Navigation, Keyword and Group
 
 /*
-	1) For each SiteCorpData record grab the t_objectid and t_objecttypeid
+	1) For each SiteCoreData record grab the t_objectid and t_objecttypeid
 	2) For that t_objecttypeid join to ms.fieldname and grab the fieldid where ms.fieldname.name = 'Title'
 	3) Take fieldid from step 2 and the t_objectid from step 1 and join to ms.fieldvalue.  Read the ms.fieldvalue.value contents and place it in the TITLE column
-	   of SiteCorpData.
+	   of SiteCoreData.
 	   
 	REPEAT for ShortDescription, BodyText, DateValue, Searchable, ShowNavigation, Keyword and Group 
 	
@@ -36,63 +36,63 @@ o.authorid, u.name
 
 update d
 set d.Title = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Title'
 
 update d
 set d.ShortDescription = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Short Description'
 
 update d
 set d.BodyText = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Body Text'
 
 update d
 set d.[ItemDate] = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Date' and fv.value is not null
 
 update d
 set d.[AuthorName]  = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Author'
 
 update d
 set d.[Searchable]  = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Searchable'
 
 update d
 set d.[ShowNavigation]  = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Show Navigation'
 
 update d
 set d.[Keyword]  = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Keyword'
 
 update d
 set d.[Group]  = fv.value
-from SiteCorpData d
+from SiteCoreData d
 join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Group'
@@ -100,11 +100,11 @@ where fn.name = 'Group'
 
 -- Testing and discovery:
 
---select * from sitecorpdata where objectid = 276894		-- parent is 100782
---select * from sitecorpdata where path = '/3550/pdf/'	-- /pdf = 100782  parent is 3550
---select * from sitecorpdata where path = '/3550/'		-- /3550 = 3550  parent is blank
+--select * from SiteCoreData where objectid = 276894		-- parent is 100782
+--select * from SiteCoreData where path = '/3550/pdf/'	-- /pdf = 100782  parent is 3550
+--select * from SiteCoreData where path = '/3550/'		-- /3550 = 3550  parent is blank
 
---select * from sitecorpdata where objectid <> t_objectid
+--select * from SiteCoreData where objectid <> t_objectid
 
 --select * 
 --from (
@@ -114,11 +114,11 @@ where fn.name = 'Group'
 
 --select top 200 * from sitecoredata (nolock)
 
---select * from sitecorpdata (nolock) where objectid = 116307		-- parent is 67355
---select * from sitecorpdata (nolock) where path = '/1025949/1026485/66983/67355/'	-- /pdf = 100782  parent is 3550
---select * from sitecorpdata (nolock) where path = '/1025949/1026485/66983/'		-- /3550 = 3550  parent is blank
+--select * from SiteCoreData (nolock) where objectid = 116307		-- parent is 67355
+--select * from SiteCoreData (nolock) where path = '/1025949/1026485/66983/67355/'	-- /pdf = 100782  parent is 3550
+--select * from SiteCoreData (nolock) where path = '/1025949/1026485/66983/'		-- /3550 = 3550  parent is blank
 
---select count(*) from sitecorpdata (nolock) where parentobjectid is not null
+--select count(*) from SiteCoreData (nolock) where parentobjectid is not null
 
 
 
