@@ -6,6 +6,7 @@ if not exists (select * from sysobjects where name='dbo.aTemp' and xtype='U')
 go
 
 truncate table dbo.SiteCoreData
+truncate table aTemp
 
 insert SiteCoreData
 select o.ObjectID, o.ObjectTypeID, ot.name [ObjectType_Description], o.t_ObjectID, o.t_ObjectTypeID, ot2.name [t_ObjectType_Description], 
