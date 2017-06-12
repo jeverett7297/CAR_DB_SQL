@@ -1,7 +1,7 @@
 USE [cmqa]
 GO
 
-/****** Object:  Table [dbo].[SiteCoreData]    Script Date: 6/12/2017 8:02:11 AM ******/
+/****** Object:  Table [dbo].[SiteCoreData]    Script Date: 6/12/2017 8:56:20 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[SiteCoreData](
 	[ObjectID] [int] NOT NULL,
 	[ObjectTypeID] [int] NULL,
 	[ObjectType_Description] [nvarchar](max) NULL,
-	[t_ObjectID] [int] NULL,
+	[t_ObjectID] [int] NOT NULL,
 	[t_ObjectTypeID] [int] NULL,
 	[t_ObjectType_Description] [nvarchar](max) NULL,
 	[ParentObjectID] [int] NULL,
@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[SiteCoreData](
 	[Name] [nvarchar](max) NULL,
 	[SimpleName] [nvarchar](max) NULL,
 	[Path] [nvarchar](max) NULL,
-	[UpdateDate] [nvarchar](max) NULL,
+	[UpdateDate] [datetime] NOT NULL,
 	[BlobSize] [bigint] NULL,
 	[BlobData] [varbinary](max) NULL,
 	[Extension] [nvarchar](50) NULL,
@@ -33,7 +33,13 @@ CREATE TABLE [dbo].[SiteCoreData](
 	[Searchable] [nvarchar](50) NULL,
 	[ShowNavigation] [nvarchar](50) NULL,
 	[Keyword] [nvarchar](max) NULL,
-	[Group] [nvarchar](max) NULL
+	[Group] [nvarchar](max) NULL,
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ObjectID] ASC,
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
