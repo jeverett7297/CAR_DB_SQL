@@ -1,3 +1,4 @@
+use cmqa
 if not exists (select * from sysobjects where name='dbo.aTemp' and xtype='U')
     create table dbo.aTemp (
         ID int identity(1,1) not null,
