@@ -5,7 +5,7 @@ DECLARE @cur cursor, @path nvarchar(max), @objectid int, @t_objectid int,
 @x int, @y nvarchar(max), @parent_objectid int, @parent_t_objectid int, @id int, @data nvarchar(max)
 
 set @cur = cursor for
-select objectid, t_objectid, [path] from SiteCorpData --where objectid = 276894  -- testing
+select objectid, t_objectid, [path] from dbo.SiteCoreData --where objectid = 276894  -- testing
 open @cur
 fetch next from @cur into @objectid, @t_objectid, @path
 while @@FETCH_STATUS = 0
@@ -38,11 +38,13 @@ while @@FETCH_STATUS = 0
 						select @y = @y + '/'
 						set @x = @x + 1
 					END
-				select @parent_objectid = objectid, @parent_t_objectid = t_objectid from SiteCorpData where path = @y
-				update SiteCorpData set ParentObjectID = @parent_objectid, t_ParentObjectID = @parent_t_objectid where objectid = @objectid and t_objectid = @t_objectid
+				select @parent_objectid = objectid, @parent_t_objectid = t_objectid from SiteCoreData where path = @y
+				update SiteCoreData set ParentObjectID = @parent_objectid, t_ParentObjectID = @parent_t_objectid where objectid = @objectid and t_objectid = @t_objectid
 			END
 
 		truncate table aTemp
+		set @parent_objectid = NULL
+		set @parent_t_objectid = NULL
 		fetch next from @cur into @objectid,  @t_objectid, @path
 	END
 
