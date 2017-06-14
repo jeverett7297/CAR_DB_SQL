@@ -14,13 +14,16 @@ select o.ObjectID, o.ObjectTypeID, ot.name [ObjectType_Description], o.t_ObjectI
 NULL [ParentObjectID], NULL [t_ParentObjectID], o.name [Name], o.SimpleName, 
 o.path [Path], o.UpdateDate, m.BlobSize, m.BlobData, m.Extension,
 NULL [Title], NULL [ShortDescription], NULL [ItemDate], NULL [BodyText], o.AuthorID, u.name [AuthorName], NULL [Searchable],  
-NULL [ShowNavigation], NULL [Keyword], NULL [Group] 
+NULL [ShowNavigation], NULL [Keyword], NULL [Group], max(contentref) [ContentRef] 
 from ms.cr_obj (nolock) o 
 left join ms.objtype (nolock) ot on ot.objecttypeid = o.objecttypeid
 left join ms.objtype (nolock) ot2 on ot2.objecttypeid = o.t_objecttypeid
 left join ms.mediaitem (nolock) m on m.objectid = o.objectid
 left join ms.usr (nolock) u on u.userid = o.authorid
-where o.cureditable = 1 and o.deleted = 0
+
+where o.cureditable = 1 and o.deleted = 0 and t_statusid = 104 and statusid = 104 and o.objecttypeid = 153522
+and o.objecttypeid <> o.t_objecttypeid
+
 group by o.objectid, o.objecttypeid, ot.name,  o.t_objectid, o.t_objecttypeid, ot2.name,
 o.name, o.simplename, o.path, o.updatedate, m.blobsize, m.blobdata, m.extension,
 o.authorid, u.name
