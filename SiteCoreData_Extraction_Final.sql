@@ -21,7 +21,7 @@ left join ms.objtype (nolock) ot2 on ot2.objecttypeid = o.t_objecttypeid
 left join ms.mediaitem (nolock) m on m.objectid = o.objectid
 left join ms.usr (nolock) u on u.userid = o.authorid
 
-where o.cureditable = 1 and o.deleted = 0 and t_statusid = 104 and statusid = 104 and o.objecttypeid = 153522
+where o.cureditable = 1 and o.deleted = 0 and o.t_statusid = 104 and o.statusid = 104 and o.objecttypeid in(153522, 243, 112)
 and o.objecttypeid <> o.t_objecttypeid
 
 group by o.objectid, o.objecttypeid, ot.name,  o.t_objectid, o.t_objecttypeid, ot2.name,
@@ -113,18 +113,6 @@ join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Group'
 
-
-select * from SiteCoreData where objectid = 276894		-- parent is 100782
-select * from SiteCoreData where path = '/3550/pdf/'	-- /pdf = 100782  parent is 3550
-select * from SiteCoreData where path = '/3550/'		-- /3550 = 3550  parent is blank
-
-select * from SiteCoreData where objectid <> t_objectid
-
-select * 
-from (
-select sdata as d, row_number() over (partition by sdata order by id desc) as rownum
-from @temp) sd
-where rownum = 2
 
 
 

@@ -23,3 +23,6 @@ on dbo.sitecoredata (ObjectTypeID)
 
 create nonclustered index IX_NC_ParentObjectID
 on dbo.sitecoredata (ParentObjectID)
+
+create nonclustered index IX_NC_tObjectTypeID
+on dbo.sitecoredata (t_ObjectTypeID)
