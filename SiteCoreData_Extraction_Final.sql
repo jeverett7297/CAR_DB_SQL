@@ -29,6 +29,20 @@ group by o.objectid, o.objecttypeid, ot.name,  o.t_objectid, o.t_objecttypeid, o
 o.name, o.simplename, o.path, o.updatedate, m.blobsize, m.blobdata, m.extension,
 o.authorid, u.name
 
+-- First pass update
+
+update sitecoredata set statusid = o.statusid
+from sitecoredata scd join ms.cr_obj o on scd.objectid = o.objectid
+
+update sitecoredata set t_statusid = o.t_statusid
+from sitecoredata scd join ms.cr_obj o on scd.t_objectid = o.t_objectid
+
+update sitecoredata set [status] = m.statusname
+from sitecoredata scd join ms.status m on scd.statusid = m.statusid
+
+update sitecoredata set [t_status] = m.statusname
+from sitecoredata scd join ms.status m on scd.t_statusid = m.statusid
+
 -- How to get Title, Short Description, Body Text, Date, Searchable, Show Navigation, Keyword and Group
 
 update d
@@ -94,6 +108,56 @@ join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
 join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
 where fn.name = 'Group'
 
+-- Pass 4
+
+update d
+set d.[StartDate]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'Start Date'
+
+update d
+set d.[EndDate]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'End Date'
+
+update d
+set d.[ExpiryDate]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'Expiry Date'
+
+update d
+set d.[EventType]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'Event Type'
+
+update d
+set d.[InPerson]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'In Person'
+
+update d
+set d.[Location]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'Location'
+
+update d
+set d.[Topic]  = fv.value
+from SiteCoreData d
+join ms.fieldname (nolock) fn on d.t_objecttypeid = fn.objecttypeid
+join ms.fieldvalue (nolock) fv on fv.fieldid = fn.fieldid and fv.objectid = d.t_objectid
+where fn.name = 'Topic'
 
 
 
