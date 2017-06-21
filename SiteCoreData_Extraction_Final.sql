@@ -21,34 +21,15 @@ left join ms.objtype (nolock) ot2 on ot2.objecttypeid = o.t_objecttypeid
 left join ms.mediaitem (nolock) m on m.objectid = o.objectid
 left join ms.usr (nolock) u on u.userid = o.authorid
 
-where o.cureditable = 1 and o.deleted = 0 and o.t_statusid = 104 and o.statusid = 104 and o.objecttypeid in(153522, 243, 112)
-and o.objecttypeid <> o.t_objecttypeid
+where o.cureditable = 1 and o.deleted = 0 and o.t_statusid = 104 and o.statusid = 104 --and o.objecttypeid in(153522, 243, 107, 112)
+--where o.cureditable = 1 and o.deleted = 0 and o.t_statusid = 104 and o.statusid = 104 and o.objecttypeid in(153522, 243, 107)--, 112)
+--and o.objecttypeid <> o.t_objecttypeid
 
 group by o.objectid, o.objecttypeid, ot.name,  o.t_objectid, o.t_objecttypeid, ot2.name,
 o.name, o.simplename, o.path, o.updatedate, m.blobsize, m.blobdata, m.extension,
 o.authorid, u.name
 
---select count(*) from dbo.SiteCoreData  -- 45,883
---select * from dbo.SiteCoreData where path like '%469969%'
---select * from sitecoredata where objectid = 469969
-
 -- How to get Title, Short Description, Body Text, Date, Searchable, Show Navigation, Keyword and Group
-
-/*
-	1) For each SiteCoreData record grab the t_objectid and t_objecttypeid
-	2) For that t_objecttypeid join to ms.fieldname and grab the fieldid where ms.fieldname.name = 'Title'
-	3) Take fieldid from step 2 and the t_objectid from step 1 and join to ms.fieldvalue.  Read the ms.fieldvalue.value contents and place it in the TITLE column
-	   of SiteCoreData.
-	   
-	REPEAT for ShortDescription, BodyText, DateValue, Searchable, ShowNavigation, Keyword and Group 
-	
-*/
-
--- Example (To see all the parts):
-
---select * from ms.cr_obj where objectid = 462632
---select * from ms.fieldname where objecttypeid = 1061
---select * from ms.fieldvalue where objectid = 66931
 
 update d
 set d.Title = fv.value
